@@ -1,0 +1,61 @@
+
+<!doctype html>
+<html>
+<head>
+<style type="text/css">
+.textbox {
+	width: 600px;
+	height: 200px;
+	overflow: auto;
+	margin: 5px 0;
+}
+</style>
+<script src="/socket.io/socket.io.js"></script>
+<script src="jquery.js"></script>
+<script>
+	$(document).ready(
+			function() {
+
+				var socket = io.connect('/ui_centers');
+				var content = $('#content_log');
+				socket.on('connect', function() {
+					content.append($('<p>').text('Connected'));
+				});
+
+				socket.on('centers', function(msg) {
+					content.append($('<p>').text(msg).append(
+							$('<em>').text(' from server')));
+				});
+
+				socket.on('message', function(msg) {
+					content.append($('<p>').text(msg).append(
+							$('<em>').text(' from server')));
+				});
+
+				$('#room-join').click(function(e) {
+					socket.emit('centers', 'centers');
+				});
+
+				$('#room-submit').click(
+						function(e) {
+							var textObj = $('#room-text');
+							var msg = textObj.val();
+							textObj.val('');
+							content.append($('<p>').text(msg).append(
+									$('<em>').text(' from me')));
+							socket.emit('insert', msg);
+						});
+
+				$('#room-join').click();
+
+			});
+</script>
+</head>
+<body>
+	<span class="title">Room Event Example</span>
+	<div id="content_log" class="textbox"></div>
+	<div id="room-join"></div>
+	<input type="text" id="room-text" />
+	<input type="submit" value="Submit" id="room-submit" />
+</body>
+</html>
