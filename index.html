@@ -27,7 +27,7 @@
 							$('<em>').text(' from server')));
 				});
 
-				socket.on('message', function(msg) {
+				socket.on('inserted', function(msg) {
 					content.append($('<p>').text(msg).append(
 							$('<em>').text(' from server')));
 				});
