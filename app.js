@@ -42,8 +42,10 @@ var Room = io
 console.log('__dirname:' + __dirname);
 app.use(express.static(__dirname + ''));
 
-server.listen(7002);
-
+var port = process.env.PORT || 5000;
+server.listen(port, function() {
+  console.log("Listening on " + port);
+});
 
 // redis를 쓸 
 //client.set("some key", "some val");
